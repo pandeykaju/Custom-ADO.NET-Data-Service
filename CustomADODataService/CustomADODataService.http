@@ -1,0 +1,106 @@
+@CustomADODataService_HostAddress = http://localhost:5103
+
+GET {{CustomADODataService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+
+### Create a new order
+POST https://localhost:7224/api/orders
+Content-Type: application/json
+
+{
+  "customerName": "Test Customer",
+  "items": [
+    {
+      "productId": 1,
+      "quantity": 2
+    },
+    {
+      "productId": 2,
+      "quantity": 3
+    }
+  ]
+}
+
+
+### Test Transaction Rollback
+POST https://localhost:7224/api/orders
+Content-Type: application/json
+
+{
+  "customerName": "Rollback Test",
+  "items": [
+    {
+      "productId": 1,
+      "quantity": 1
+    },
+    {
+      "productId": 999999,
+      "quantity": 1
+    }
+  ]
+}
+
+
+### Test Memory Cache
+GET https://localhost:7224/api/products
+Accept: application/json
+
+### Get all products
+GET https://localhost:7224/api/products
+Accept: application/json
+
+
+### Create product and invalidate cache
+POST https://localhost:7224/api/products
+Content-Type: application/json
+
+{
+  "productName": "Headphones",
+  "price": 1500,
+  "quantity": 10
+}
+
+
+### Update Headphones Product
+PUT https://localhost:7224/api/products/7
+Content-Type: application/json
+
+{
+  "productId": 7,
+  "productName": "Wireless Headphones",
+  "price": 2000,
+  "quantity": 15
+}
+
+
+### Delete Headphones Product
+DELETE https://localhost:7224/api/products/7
+Accept: application/json
+
+### Verify Product Deletion
+GET https://localhost:7224/api/products/7
+Accept: application/json
+
+### Check Cache After DELETE
+GET https://localhost:7224/api/products
+Accept: application/json
+
+
+### Test Transaction Rollback
+POST https://localhost:7224/api/orders
+Content-Type: application/json
+
+{
+  "customerName": "Rollback Test",
+  "items": [
+    {
+      "productId": 1,
+      "quantity": 1
+    },
+    {
+      "productId": 99999,
+      "quantity": 2
+    }
+  ]
+}
